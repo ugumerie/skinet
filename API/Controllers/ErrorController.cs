@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("errors/{code}")]
-    [ApiExplorerSettings(IgnoreApi = true)]// ignored by swagger -> won't see this as an endpoint
+    /*ignored by swagger -> won't see this as an endpoint - initially causing error while trying to load 
+    swagger - cause we want this controller to handle any type of error post, ger, put, delete for our 
+    errors
+    */
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : BaseApiController
     {
         public IActionResult Error(int code)
