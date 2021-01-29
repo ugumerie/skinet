@@ -16,7 +16,7 @@ namespace Infrastructure.Data.Config
             //convert the enum property to string
             builder.Property(s => s.Status)
                 .HasConversion(
-                    o => o.ToString(),  //cconvert to string and saved in the database
+                    o => o.ToString(),  //convert to string and saved in the database
                     o => (OrderStatus) Enum.Parse(typeof(OrderStatus), o) //converted back to enum out of the database
                 );
 
