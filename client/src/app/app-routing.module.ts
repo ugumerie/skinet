@@ -47,6 +47,12 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.module').then((mod) => mod.AccountModule),
     data: {breadcrumb: {skip: true}}
   },
+  {
+    path: 'orders',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./order/order.module').then(mod => mod.OrderModule),
+    data: {breadcrumb: 'Orders'}
+  },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];
 
