@@ -8,17 +8,22 @@ import { IBasketTotals } from '../shared/models/basket';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
   checkOutForm: FormGroup;
   basketTotals$: Observable<IBasketTotals>;
 
-  constructor(private fb: FormBuilder, private accountService: AccountService, private basketService: BasketService) { }
+  constructor(
+    private fb: FormBuilder,
+    private accountService: AccountService,
+    private basketService: BasketService
+  ) {}
 
   ngOnInit(): void {
     this.createCheckoutForm();
     this.getAddressFormValues();
+    this.getDeliveryMethodFormValue();
     this.basketTotals$ = this.basketService.basketTotal$;
   }
 
@@ -34,19 +39,31 @@ export class CheckoutComponent implements OnInit {
       }),
 
       deliveryForm: this.fb.group({
-        deliveryMethod: [null, Validators.required]
+        deliveryMethod: [null, Validators.required],
       }),
 
       paymentForm: this.fb.group({
-        nameOnCard: [null, Validators.required]
-      })
+        nameOnCard: [null, Validators.required],
+      }),
     });
   }
 
   getAddressFormValues(): void {
-    this.accountService.getUserAddress().subscribe(address => {
-      this.checkOutForm.get('addressForm').patchValue(address);
-    }, error => console.log(error));
+    this.accountService.getUserAddress().subscribe(
+      (address) => {
+        this.checkOutForm.get('addressForm').patchValue(address);
+      },
+      (error) => console.log(error)
+    );
   }
 
+  getDeliveryMethodFormValue(): void {
+    const basket = this.basketService.getCurrentBasketValue();
+    if (basket.deliveryMethodId !== null) {
+      this.checkOutForm
+        .get('deliveryForm')
+        .get('deliveryMethod')
+        .patchValue(basket.deliveryMethodId.toString());
+    }
+  }
 }

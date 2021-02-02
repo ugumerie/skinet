@@ -30,7 +30,7 @@ namespace Infrastructure.Data
         //update or create a basket
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
         {
-            //we expiry date
+            //we add expiry date
             var created = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize(basket),
             TimeSpan.FromDays(30));
 
