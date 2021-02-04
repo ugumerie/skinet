@@ -17,9 +17,9 @@ namespace API.Controllers
 
         // Webhook secret that lets us know it's from stripe
         private const string WhSecret = "whsec_DU87W6gmOb0NWCPaJfWZLVoDrazA7pyx";
-        private readonly ILogger<IPaymentService> _logger;
+        private readonly ILogger<PaymentsController> _logger;
 
-        public PaymentsController(IPaymentService paymentService, ILogger<IPaymentService> logger)
+        public PaymentsController(IPaymentService paymentService, ILogger<PaymentsController> logger)
         {
             _logger = logger;
             _paymentService = paymentService;
@@ -50,17 +50,17 @@ namespace API.Controllers
             {
                 case "payment_intent.succeeded":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment Succeeded: ", intent.Id);
+                    _logger.LogInformation($"Payment Succeeded: {intent.Id}");
                     // TODO: update order with new status of payment succeeded
                     order = await _paymentService.UpdateOrderPaymentSucceeded(intent.Id);
-                    _logger.LogInformation("Order updated to payment received: ", order.Id);
+                    _logger.LogInformation($"Order updated to payment received: {order.Id}");
                     break;
                 case "payment_intent.payment_failed":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment failed: {Id}", intent.Id);
+                    _logger.LogInformation($"Payment failed: {intent.Id}");
                     // TODO: update order eith new status of payment failed
                     order = await _paymentService.UpdateOrderPaymentFailed(intent.Id);
-                    _logger.LogInformation("Payment failed: {Id}", order.Id);
+                    _logger.LogInformation($"Payment failed: {intent.Id}");
                     break;
             }
 
