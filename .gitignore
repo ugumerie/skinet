@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# publishing stuff
+publish
+wwwroot
+
 # appsettings.json file
 appsettings.json
 
@@ -443,3 +447,4 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.vscode/settings.json

@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+   <!-- Publishable content added here i.e add our content folder-->
+    <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 

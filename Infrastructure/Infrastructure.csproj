@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <!-- Publish our seed data to the bin folder using "CopyToOutputDirectory" ChybZ$4gud-->
+    <None Include="Data\SeedData\**" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
@@ -10,6 +12,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
     <PackageReference Include="Stripe.net" Version="39.33.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
