@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class MySQLInitial : Migration
+    public partial class PhotoEntityAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,10 +12,10 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ShortName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    DeliveryTime = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -29,8 +28,8 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,8 +41,8 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,19 +54,19 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    BuyerEmail = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    OrderDate = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    ShipToAdress_FirstName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ShipToAdress_LastName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ShipToAdress_Street = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ShipToAdress_City = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ShipToAdress_State = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ShipToAdress_ZipCode = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuyerEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ShipToAdress_FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShipToAdress_LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShipToAdress_Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShipToAdress_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShipToAdress_State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShipToAdress_ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeliveryMethodId = table.Column<int>(type: "int", nullable: true),
-                    Subtotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Status = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
-                    PaymentIntentId = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true)
+                    Subtotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentIntentId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,11 +84,10 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100) CHARACTER SET utf8mb4", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PictureUrl = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     ProductTypeId = table.Column<int>(type: "int", nullable: false),
                     ProductBrandId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -115,10 +113,10 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ItemOrdered_ProductItemId = table.Column<int>(type: "int", nullable: true),
-                    ItemOrdered_ProductName = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    ItemOrdered_PictureUrl = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    ItemOrdered_ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ItemOrdered_PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: true)
@@ -134,6 +132,28 @@ namespace Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Photo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsMain = table.Column<bool>(type: "bit", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photo_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
@@ -143,6 +163,11 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_Orders_DeliveryMethodId",
                 table: "Orders",
                 column: "DeliveryMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_ProductId",
+                table: "Photo",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductBrandId",
@@ -161,19 +186,22 @@ namespace Infrastructure.Data.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Photo");
 
             migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryMethods");
 
             migrationBuilder.DropTable(
                 name: "ProductBrands");
 
             migrationBuilder.DropTable(
                 name: "ProductTypes");
-
-            migrationBuilder.DropTable(
-                name: "DeliveryMethods");
         }
     }
 }

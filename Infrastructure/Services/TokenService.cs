@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt; //jwt registered claim
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens; //symmetric key
 
@@ -14,38 +17,45 @@ namespace Infrastructure.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        
-        public TokenService(IConfiguration config)
+        private readonly UserManager<AppUser> _userManager;
+
+        public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
             _config = config;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Token:Key"]));
         }
 
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user)
         {
-           var claims = new List<Claim>
-           {
+            var claims = new List<Claim>
+            {
                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                new Claim(JwtRegisteredClaimNames.GivenName, user.DisplayName)
-           };
+            };
 
-           // encrypt our key with an algorithm
-           var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            // add roles to claim
+            var roles = await _userManager.GetRolesAsync(user);
 
-           // create something that describes our jwt
-           var tokenDescriptor = new SecurityTokenDescriptor
-           {
-               Subject = new ClaimsIdentity(claims),
-               Expires = DateTime.Now.AddDays(7),
-               SigningCredentials = creds,
-               Issuer = _config["Token:Issuer"]
-           };
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-           var tokenHandler = new JwtSecurityTokenHandler();
+            // encrypt our key with an algorithm
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-           var token = tokenHandler.CreateToken(tokenDescriptor);
+            // create something that describes our jwt
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = creds,
+                Issuer = _config["Token:Issuer"]
+            };
 
-           return tokenHandler.WriteToken(token);
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

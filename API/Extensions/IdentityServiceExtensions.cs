@@ -17,9 +17,11 @@ namespace API.Extensions
             var builder = services.AddIdentityCore<AppUser>();
 
             // make our UserManager to work with identity database and EF - it can work with other ORM
-            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder = new IdentityBuilder(builder.UserType, typeof(AppRole), builder.Services);
             builder.AddEntityFrameworkStores<AppIdentityDbContext>();
             builder.AddSignInManager<SignInManager<AppUser>>();
+            builder.AddRoleValidator<RoleValidator<AppRole>>();
+            builder.AddRoleManager<RoleManager<AppRole>>();
 
             //alows access to the sign in manager
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

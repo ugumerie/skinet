@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-4">
+    <h5>Step 1 - Add Photo</h5>
+    <div class="custom-dropzone" ngx-dropzone (change)="onSelect($event)">
+      <ngx-dropzone-label>
+        <i class="fa fa-upload fa-3x"></i>
+        <h5>Drop image here</h5>
+      </ngx-dropzone-label>
+    </div>
+  </div>
+  <div class="col-4 img-preview">
+    <h5>Step 2 - Resize Image</h5>
+    <image-cropper
+      class="img-fluid"
+      [imageChangedEvent]="imageChangedEvent"
+      [imageFile]="files[0]"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+  </div>
+  <div class="col-4">
+    <h5>Step 3 - Preview & Upload</h5>
+    <ng-container *ngIf="croppedImage">
+        <img [src]="croppedImage" class="img-fluid">
+        <button class="btn btn-block btn-primary" (click)="onUpload()">Upload Image</button>
+    </ng-container>
+  </div>
+</div>
