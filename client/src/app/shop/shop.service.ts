@@ -21,25 +21,33 @@ export class ShopService {
   types: IType[] = [];
   pagination = new Pagination();
   shopParams = new ShopParams();
+  productCache = new Map();
 
   constructor(private http: HttpClient) {}
 
   getProducts(useCache: boolean): Observable<IPagination> {
     if (useCache === false) {
-      this.products = [];
+      this.productCache = new Map();
     }
 
-    if (this.products.length > 0 && useCache === true) {
-      const pageReceived = Math.ceil( // 12 / 6 => 2
-        this.products.length / this.shopParams.pageSize
-      );
+    // if (this.products.length > 0 && useCache === true) {
+    //   const pageReceived = Math.ceil( // 12 / 6 => 2
+    //     this.products.length / this.shopParams.pageSize
+    //   );
 
-      if (this.shopParams.pageNumber <= pageReceived) {
-        this.pagination.data = this.products.slice( // 2-1 = 1*6 = 6, 2*6=12 =>i.e from index 6 to 12
-          (this.shopParams.pageNumber - 1) * this.shopParams.pageSize,
-          this.shopParams.pageNumber * this.shopParams.pageSize
-        );
+    //   if (this.shopParams.pageNumber <= pageReceived) {
+    //     this.pagination.data = this.products.slice( // 2-1 = 1*6 = 6, 2*6=12 =>i.e from index 6 to 12
+    //       (this.shopParams.pageNumber - 1) * this.shopParams.pageSize,
+    //       this.shopParams.pageNumber * this.shopParams.pageSize
+    //     );
 
+    //     return of(this.pagination);
+    //   }
+    // }
+
+    if (this.productCache.size > 0 && useCache === true) {
+      if (this.productCache.has(Object.values(this.shopParams).join('-'))) {
+        this.pagination.data = this.productCache.get(Object.values(this.shopParams).join('-'));
         return of(this.pagination);
       }
     }
@@ -68,7 +76,8 @@ export class ShopService {
       })
       .pipe(
         map((response) => {
-          this.products = [...this.products, ...response.body.data]; // caching the products and for paging
+          // this.products = [...this.products, ...response.body.data]; // caching the products and for paging
+          this.productCache.set(Object.values(this.shopParams).join('-'), response.body.data);
           this.pagination = response.body;
           return this.pagination;
         })
@@ -84,7 +93,13 @@ export class ShopService {
   }
 
   getProduct(id: number): any {
-    const product = this.products.find((p) => p.id === id);
+    // const product = this.products.find((p) => p.id === id);
+    let product: IProduct;
+
+    this.productCache.forEach((products: IProduct[]) => {
+      product = products.find(p => p.id === id);
+    });
+
     if (product) {
       return of(product);
     }

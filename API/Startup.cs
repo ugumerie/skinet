@@ -28,9 +28,9 @@ namespace API
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<StoreContext>(option => 
-                option.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+                option.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppIdentityDbContext>(option => 
-                option.UseSqlServer(_config.GetConnectionString("IdentityConnection"))); 
+                option.UseNpgsql(_config.GetConnectionString("IdentityConnection"))); 
 
             //call configure services for development
             ConfigureServices(services);
@@ -38,14 +38,10 @@ namespace API
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-             var defaultConnectionString = _config.GetConnectionString("DefaultConnection");
-             var identityConnectionString = _config.GetConnectionString("IdentityConnection");
-
-             services.AddDbContext<StoreContext>(option => 
-                option.UseMySql(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString)));
-
+            services.AddDbContext<StoreContext>(option => 
+                option.UseNpgsql(_config.GetConnectionString("DefaultConnection")));
             services.AddDbContext<AppIdentityDbContext>(option => 
-                option.UseMySql(identityConnectionString, ServerVersion.AutoDetect(identityConnectionString))); 
+                option.UseNpgsql(_config.GetConnectionString("IdentityConnection")));
 
             //call configure services for production mode
             ConfigureServices(services);

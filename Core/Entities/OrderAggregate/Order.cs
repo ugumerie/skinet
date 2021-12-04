@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities.OrderAggregate
 {
@@ -21,7 +22,9 @@ namespace Core.Entities.OrderAggregate
         }
 
         public string BuyerEmail { get; set; }
-        public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+
+        [Required]
         public Address ShipToAdress { get; set; }   
         public DeliveryMethod DeliveryMethod { get; set; }
         public IReadOnlyList<OrderItem> OrderItems { get; set; }

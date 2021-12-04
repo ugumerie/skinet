@@ -53,6 +53,7 @@ export class ShopComponent implements OnInit {
   }
 
   getTypes(): void {
+    // tslint:disable-next-line: deprecation
     this.shopService.getTypes().subscribe(response => {
       this.types = [{id: 0, name: 'All'}, ...response];
     }, error => {
